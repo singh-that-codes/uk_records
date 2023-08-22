@@ -1,13 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:myukapp/firebase_options.dart';
 import 'package:myukapp/screens/HomeScreen.dart';
 import 'package:myukapp/screens/dashboard_screen.dart';
 import 'package:myukapp/screens/list_screen.dart';
 import 'package:myukapp/screens/sign_up_page.dart';
 
 void main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
 

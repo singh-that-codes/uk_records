@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "757104425829-e728l7s3vtitdugimoj2cqkm3v0fg0fb.apps.googleusercontent.com",
+          "client_id": "757104425829-3v2n8vfujli3mtuutru16hbusk9ap9ab.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -28,8 +28,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "757104425829-e728l7s3vtitdugimoj2cqkm3v0fg0fb.apps.googleusercontent.com",
+              "client_id": "757104425829-3v2n8vfujli3mtuutru16hbusk9ap9ab.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "757104425829-posm706dlmioc0ofqak8uiufdke4rs1k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.singhthatcodes.myukapp"
+              }
             }
           ]
         }

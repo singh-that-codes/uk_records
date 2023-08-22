@@ -7,65 +7,39 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  List<String> filteredCriminals = [];
-  TextEditingController _searchController = TextEditingController();
+  List<Map<String, dynamic>> criminalsData = []; // Store all criminal data
 
-  void _filterCriminals(String query) {
-    setState(() {
-      filteredCriminals = query.isEmpty
-          ? []
-          : filteredCriminals
-              .where((criminal) =>
-                  criminal.toLowerCase().contains(query.toLowerCase()))
-              .toList();
+  @override
+  void initState() {
+    super.initState();
+    _loadCriminals();
+  }
+
+  void _loadCriminals() {
+    FirebaseFirestore.instance.collection('criminals').get().then((querySnapshot) {
+      setState(() {
+        criminalsData = querySnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Search Criminals')),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _filterCriminals,
-              decoration: const InputDecoration(
-                labelText: 'Search by name',
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
-          ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('criminals').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                }
-
-                if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
-                }
-
-                List<String> criminals = snapshot.data!.docs
-                    .map((doc) => doc['fullName'].toString())
-                    .toList();
-
-                return ListView.builder(
-                  itemCount: filteredCriminals.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(criminals[index]), // Use the 'criminals' list here
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+      appBar: AppBar(title: Text('Criminal List')),
+      body: ListView.builder(
+        itemCount: criminalsData.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(criminalsData[index]['fullName']),
+            subtitle: Text(criminalsData[index]['summary']),
+            leading: criminalsData[index]['image'] != null
+                ? Image.network(criminalsData[index]['image']) // Display the image
+                : Icon(Icons.person), // Display default icon if no image
+          );
+        },
       ),
     );
   }

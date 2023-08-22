@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
@@ -8,10 +10,10 @@ class FirestoreService {
     try {
       await _firestore.collection('criminals').add({
         'name': criminalName,
+        
         // Add more fields as needed
       });
     } catch (e) {
-      print('Error adding criminal record: $e');
     }
   }
 

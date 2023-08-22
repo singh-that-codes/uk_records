@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_final_fields, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:myukapp/firestore_database/database_service.dart';
 
@@ -15,17 +17,15 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
   List<String> _filteredCriminals = [];
 
   void _filterCriminals(String query) {
-  DatabaseService().getCriminals().listen((criminals) {
-    setState(() {
-      _filteredCriminals = criminals
-          .where((criminal) =>
-              criminal.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+    DatabaseService().getCriminals().listen((criminals) {
+      setState(() {
+        _filteredCriminals = criminals
+            .where((criminal) =>
+                criminal.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      });
     });
-  });
-}
-
-
+  }
 
   void _updateSelectedCriminal(String criminalKey) {
     setState(() {
@@ -38,17 +38,17 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Update Criminal')),
+      appBar: AppBar(title: const Text('Update Criminal')),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               onChanged: _filterCriminals,
-              decoration: InputDecoration(labelText: 'Search Criminal'),
+              decoration: const InputDecoration(labelText: 'Search Criminal'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             if (_filteredCriminals.isNotEmpty)
               Column(
                 children: _filteredCriminals.map((criminalKey) {
@@ -59,7 +59,7 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
                 }).toList(),
               ),
             if (_selectedCriminalKey.isNotEmpty) ...[
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               DropdownButton<String>(
                 value: _selectedField,
                 onChanged: (value) {
@@ -67,20 +67,53 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
                     _selectedField = value!;
                   });
                 },
-                items: <String>[
-                  'fullName', // Add other field names here
-                  'fathersname',
-                  'mothersname',
-                  // Add more fields
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                hint: Text('Select Field to Update'),
+                items: const <DropdownMenuItem<String>>[
+                  DropdownMenuItem<String>(
+                    value: 'fullName',
+                    child: Text('Full Name'),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'fathersname',
+                    child: Text("Father's Name"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'mothersname',
+                    child: Text("Mother's Name"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'age',
+                    child: Text("Age"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'address',
+                    child: Text("Address"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'phone',
+                    child: Text("Phone"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'criminalRecord',
+                    child: Text("Criminal Record"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'relatedRecords',
+                    child: Text("Related Records"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'summary',
+                    child: Text("Summary"),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'imaggeurl',
+                    child: Text("Image"),
+                  ),
+
+                  // Add more field names here
+                ],
+                hint: const Text('Select Field to Update'),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               if (_selectedField.isNotEmpty) ...[
                 TextField(
                   controller: _newValueController,
@@ -88,7 +121,7 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
                     labelText: 'New Value for $_selectedField',
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
                     String newValue = _newValueController.text;
@@ -99,14 +132,16 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
                     );
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Criminal record updated')),
+                      const SnackBar(content: Text('Criminal record updated')),
                     );
 
-                    _selectedCriminalKey = '';
-                    _selectedField = '';
-                    _newValueController.clear();
+                    setState(() {
+                      _selectedCriminalKey = '';
+                      _selectedField = '';
+                      _newValueController.clear();
+                    });
                   },
-                  child: Text('Update Criminal'),
+                  child: const Text('Update Criminal'),
                 ),
               ],
             ],

@@ -1,4 +1,3 @@
-// database_service.dart
 // ignore_for_file: unused_field
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,7 +15,8 @@ class DatabaseService {
     required String phone,
     required String criminalRecord,
     required String relatedRecords,
-    required String summary,
+    required String summary, 
+    required String imageUrl,
   }) async {
     await _criminalsRef.add({
       'fullName': fullName,
@@ -28,11 +28,12 @@ class DatabaseService {
       'criminalRecord': criminalRecord,
       'relatedRecords': relatedRecords,
       'summary': summary,
+      'imageUrl': imageUrl,
     });
   }
 
   Future<void> updateCriminal(String criminalDocId, String newName) async {
-    await _criminalsRef.doc(criminalDocId).update({'name': newName});
+    await _criminalsRef.doc(criminalDocId).update({'fullName': newName});
   }
 
   Future<void> deleteCriminal(String criminalDocId) async {
@@ -40,18 +41,48 @@ class DatabaseService {
   }
 
   Stream<List<String>> getCriminals() {
-    return _criminalsRef.snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => doc['name'].toString()).toList();
+    return _criminalsRef.snapshots().map(
+      (querySnapshot) {
+        List<String> criminalNames = [];
+
+        for (var doc in querySnapshot.docs) {
+          var data = doc.data() as Map<String, dynamic>?;
+          if (data != null && data.containsKey('fullName') && data['fullName'] != null) {
+            criminalNames.add(data['fullName'].toString());
+          } else {
+            criminalNames.add(''); // Return an empty string or a default value
+          }
+        }
+
+        return criminalNames;
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>> getCriminalDetails(String criminalName) async {
+    QuerySnapshot querySnapshot = await _criminalsRef.where('fullName', isEqualTo: criminalName).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      var data = querySnapshot.docs[0].data() as Map<String, dynamic>?;
+      return data ?? {};
+    }
+    return {};
+  }
+
+  Future<void> updateCriminalField(
+    String criminalDocId,
+    String fieldName,
+    String newValue,
+  ) async {
+    await _criminalsRef.doc(criminalDocId).update({
+      fieldName: newValue,
     });
   }
-  Future<void> updateCriminalField(
-  String criminalDocId,
-  String fieldName,
-  String newValue,
-) async {
-  await _criminalsRef.doc(criminalDocId).update({
-    fieldName: newValue,
-  });
+
+  Future<void> updateCriminalImage(String criminalDocId, String imageUrl) async {
+    await _criminalsRef.doc(criminalDocId).update({
+      'image': imageUrl,
+    });
+  }
 }
 
-}
+
