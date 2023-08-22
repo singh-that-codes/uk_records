@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "757104425829",
+    "firebase_url": "https://myukapp-3c3b8-default-rtdb.firebaseio.com",
+    "project_id": "myukapp-3c3b8",
+    "storage_bucket": "myukapp-3c3b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757104425829:android:584e408292dd08b411ff8c",
+        "android_client_info": {
+          "package_name": "com.singhthatcodes.myukapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757104425829-e728l7s3vtitdugimoj2cqkm3v0fg0fb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8AEnzssn7ce6gXghmn--M0mi0hlvoy50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757104425829-e728l7s3vtitdugimoj2cqkm3v0fg0fb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
