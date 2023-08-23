@@ -2,9 +2,13 @@
 <html>
 <head>
   <!-- ... (your head content) ... -->
-
+  <script src="flutter.js" defer></script>
+  <script>
+    const serviceWorkerVersion = null; // Set an appropriate version if needed
+  </script>
   <!-- Add Google Sign-In client ID -->
   <meta name="google-signin-client_id" content="757104425829-3v2n8vfujli3mtuutru16hbusk9ap9ab.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 
   <title>myukapp</title>
   <link rel="manifest" href="manifest.json">
@@ -35,7 +39,17 @@
 <body>
   <script>
     window.addEventListener('load', function(ev) {
-      // ... (rest of the code) ...
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
     });
   </script>
 </body>
