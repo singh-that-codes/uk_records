@@ -39,8 +39,14 @@ class _UpdateCriminalDetailsScreenState
 
   setState(() {
     _fullNameController.text = criminalDetails['fullName'];
-    _fathersNameController.text=criminalDetails['fathersname']
+    _fathersNameController.text=criminalDetails['fathersname'];
+    _mothersNameController.text=criminalDetails['mothersname'];
+    _criminalRecordsController=criminalDetails['criminalRecords'];
+    _relatedRecordsController=criminalDetails['relatedrecords'];
+    _imageUrlController=criminalDetails['imageurl'];
     _ageController.text = criminalDetails['age'];
+    _phoneController=criminalDetails['phone'];
+    _summaryController=criminalDetails['summary'];
     _addressController.text = criminalDetails['address'];
 
     
