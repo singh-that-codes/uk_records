@@ -1,12 +1,14 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print, library_private_types_in_public_api
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:myukapp/firestore_database/database_service.dart';
+import 'package:myukapp/styles/app_colors.dart';
+import 'package:myukapp/styles/styles.dart';
 
 class AddCriminalScreen extends StatefulWidget {
   const AddCriminalScreen({super.key});
@@ -114,8 +116,13 @@ class _AddCriminalScreenState extends State<AddCriminalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar: AppBar(title: const Text('Add New Criminal')),
+      backgroundColor: AppColors.bgColor,
+      appBar: AppBar(title: Text(
+        'Add New Criminal',
+        style: AppStyles.titleSty,
+        ),
+        backgroundColor: AppColors.appBarColor,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

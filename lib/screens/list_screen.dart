@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, unnecessary_cast
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:myukapp/screens/criminal_details_screen.dart';
@@ -14,8 +12,8 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  List<Map<String, dynamic>> criminalsData = []; // Store all criminal data
-  List<Map<String, dynamic>> filteredCriminals = []; // Store filtered criminal data
+  List<Map<String, dynamic>> criminalsData = [];
+  List<Map<String, dynamic>> filteredCriminals = [];
 
   @override
   void initState() {
@@ -29,7 +27,7 @@ class _ListScreenState extends State<ListScreen> {
         criminalsData = querySnapshot.docs
             .map((doc) => doc.data() as Map<String, dynamic>)
             .toList();
-        filteredCriminals = criminalsData; // Initialize filtered list with all criminals
+        filteredCriminals = criminalsData;
       });
     });
   }
@@ -37,7 +35,7 @@ class _ListScreenState extends State<ListScreen> {
   void _filterCriminals(String query) {
     setState(() {
       filteredCriminals = criminalsData
-          .where((criminal) => criminal['fullName'].toLowerCase().contains(query.toLowerCase()))
+          .where((criminal) => criminal['fullName']?.toLowerCase().contains(query.toLowerCase()) ?? false)
           .toList();
     });
   }
@@ -46,10 +44,9 @@ class _ListScreenState extends State<ListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
-      appBar: AppBar
-      (title: const Text('Criminal List'),
-      backgroundColor: AppColors.appBarColor,
-      
+      appBar: AppBar(
+        title: const Text('Criminal List'),
+        backgroundColor: AppColors.appBarColor,
       ),
       body: Column(
         children: [
@@ -62,7 +59,7 @@ class _ListScreenState extends State<ListScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                   borderSide: BorderSide(
                     color: AppColors.ShadeColor,
-                  )
+                  ),
                 ),
                 labelText: 'Search by Full Name',
                 prefixIcon: Icon(Icons.search),
@@ -73,27 +70,33 @@ class _ListScreenState extends State<ListScreen> {
             child: ListView.builder(
               itemCount: filteredCriminals.length,
               itemBuilder: (context, index) {
+                final fullName = filteredCriminals[index]['fullName'] as String?;
+                final summary = filteredCriminals[index]['summary'] as String?;
+                final image = filteredCriminals[index]['image'];
+
                 return ListTile(
                   title: Text(
-                    filteredCriminals[index]['fullName'],
-                    style: AppStyles.bodyStyle,),
+                    fullName ?? 'Unknown',
+                    style: AppStyles.bodyStyle,
+                  ),
                   subtitle: Text(
-                    filteredCriminals[index]['summary'],
+                    summary ?? '',
                     style: AppStyles.commonTextStyle,
-                    
-                    ),
-                  leading: filteredCriminals[index]['image'] != null
-                      ? Image.network(filteredCriminals[index]['image']) // Display the image
-                      : const Icon(Icons.person), // Display default icon if no image
+                  ),
+                  leading: image != null
+                      ? Image.network(image)
+                      : const Icon(Icons.person),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CriminalDetailsScreen(
-                          criminalDetails: filteredCriminals[index], // Pass selected criminal's details
+                    if (fullName != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CriminalDetailsScreen(
+                            criminalDetails: filteredCriminals[index],
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                 );
               },

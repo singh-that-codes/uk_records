@@ -33,7 +33,7 @@ class _UpdateCriminalDetailsScreenState
     _loadCriminalDetails();
   }
 
-  void _loadCriminalDetails() async {
+  void _loadCriminalDetails() async { 
   Map<String, dynamic> criminalDetails =
       await DatabaseService().getCriminalDetails(widget.selectedCriminal);
 
