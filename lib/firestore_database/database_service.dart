@@ -94,14 +94,25 @@ class DatabaseService {
   }
 
   Future<void> updateCriminalField(
-    String criminalDocId,
-    String fieldName,
-    String newValue,
-  ) async {
-    await _criminalsRef.doc(criminalDocId).update({
-      fieldName: newValue,
-    });
+  String criminalDocId,
+  String fieldName,
+  String newValue,
+) async {
+  try {
+    // Retrieve the existing document data
+    DocumentSnapshot docSnapshot = await _criminalsRef.doc(criminalDocId).get();
+    Map<String, dynamic> existingData = docSnapshot.data() as Map<String, dynamic>;
+
+    // Update the desired field with the new value
+    existingData[fieldName] = newValue;
+
+    // Update the entire document with the modified data
+    await _criminalsRef.doc(criminalDocId).set(existingData);
+  } catch (e) {
+    print('Error updating criminal field: $e');
+    // Handle the error as needed
   }
+}
 
   Future<void> updateCriminalImage(String criminalDocId, String imageUrl) async {
     await _criminalsRef.doc(criminalDocId).update({

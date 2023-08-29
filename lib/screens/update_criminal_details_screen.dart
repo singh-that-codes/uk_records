@@ -1,10 +1,13 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:myukapp/firestore_database/database_service.dart';
+import 'package:myukapp/styles/app_colors.dart';
 
 class UpdateCriminalDetailsScreen extends StatefulWidget {
   final String selectedCriminal;
 
-  const UpdateCriminalDetailsScreen({Key? key, required this.selectedCriminal})
+  const UpdateCriminalDetailsScreen({Key? key, required this.selectedCriminal, required String criminalName})
       : super(key: key);
 
   @override
@@ -14,17 +17,18 @@ class UpdateCriminalDetailsScreen extends StatefulWidget {
 
 class _UpdateCriminalDetailsScreenState
     extends State<UpdateCriminalDetailsScreen> {
-  TextEditingController _fullNameController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _fathersNameController = TextEditingController();
-  TextEditingController _mothersNameController = TextEditingController();
+      
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _fathersNameController = TextEditingController();
+  final TextEditingController _mothersNameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _criminalRecordsController = TextEditingController();
   TextEditingController _relatedRecordsController = TextEditingController();
   TextEditingController _summaryController = TextEditingController();
   TextEditingController _imageUrlController = TextEditingController();
-
+  
   // Add more controllers for other fields
 
   @override
@@ -38,17 +42,16 @@ class _UpdateCriminalDetailsScreenState
       await DatabaseService().getCriminalDetails(widget.selectedCriminal);
 
   setState(() {
-    _fullNameController.text = criminalDetails['fullName'];
-    _fathersNameController.text=criminalDetails['fathersname'];
-    _mothersNameController.text=criminalDetails['mothersname'];
-    _criminalRecordsController=criminalDetails['criminalRecords'];
-    _relatedRecordsController=criminalDetails['relatedrecords'];
-    _imageUrlController=criminalDetails['imageurl'];
-    _ageController.text = criminalDetails['age'];
-    _phoneController=criminalDetails['phone'];
-    _summaryController=criminalDetails['summary'];
-    _addressController.text = criminalDetails['address'];
-
+    _fullNameController.text = criminalDetails['fullName'] ?? "";
+    _fathersNameController.text=criminalDetails['fathersname'] ?? "";
+    _mothersNameController.text=criminalDetails['mothersname'] ?? "";
+    _criminalRecordsController.text=criminalDetails['criminalRecords'] ?? "";
+    _relatedRecordsController.text=criminalDetails['relatedrecords'] ?? "";
+    _imageUrlController.text=criminalDetails['imageurl'] ?? "";
+    _ageController.text = criminalDetails['age'] ?? "";
+    _phoneController.text=criminalDetails['phone'] ?? "";
+    _summaryController.text=criminalDetails['summary'] ?? "";
+    _addressController.text = criminalDetails['address'] ?? "";
     
   });
 }
@@ -57,8 +60,10 @@ class _UpdateCriminalDetailsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.bgColor,
       appBar: AppBar(
-        title: Text('Update Criminal Details'),
+        backgroundColor: AppColors.appBarColor,
+        title: const Text('Update Criminal Details'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -66,17 +71,41 @@ class _UpdateCriminalDetailsScreenState
           children: [
             TextField(
               controller: _fullNameController,
-              decoration: InputDecoration(labelText: 'Full Name'),
+              decoration: const InputDecoration(labelText: 'Full Name'),
+            ),
+            TextField(
+              controller: _fathersNameController,
+              decoration: const InputDecoration(labelText: 'Father\'s Name'),
+            ),
+            TextField(
+              controller: _mothersNameController,
+              decoration: const InputDecoration(labelText: 'Mother\'s Name'),
             ),
             TextField(
               controller: _ageController,
-              decoration: InputDecoration(labelText: 'Age'),
+              decoration: const InputDecoration(labelText: 'Age'),
             ),
             TextField(
               controller: _addressController,
-              decoration: InputDecoration(labelText: 'Address'),
+              decoration: const InputDecoration(labelText: 'Address'),
             ),
-            // Add more TextFields for other fields
+            TextField(
+              controller: _phoneController,
+              decoration: const InputDecoration(labelText: 'Phone'),
+            ),
+            TextField(
+              controller: _criminalRecordsController,
+              decoration: const InputDecoration(labelText: 'Criminal Records'),
+            ),
+            TextField(
+              controller: _relatedRecordsController,
+              decoration: const InputDecoration(labelText: 'Related Records'),
+            ),
+            TextField(
+              controller: _summaryController,
+              decoration: const InputDecoration(labelText: 'Summary'),
+            ),
+            
             ElevatedButton(
               onPressed: () {
                 String newName = _fullNameController.text;
@@ -105,10 +134,8 @@ class _UpdateCriminalDetailsScreenState
                   newRelatedRecords,
                   newSummary,
                   newImageUrl,
-                  // Pass new values for other fields
                 );
 
-                // Show a success message
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Criminal details updated successfully')),
                 );
@@ -124,10 +151,15 @@ class _UpdateCriminalDetailsScreenState
   @override
   void dispose() {
     _fullNameController.dispose();
+    _fathersNameController.dispose();
+    _mothersNameController.dispose();
     _ageController.dispose();
     _addressController.dispose();
-    // Dispose other controllers
-
+    _phoneController.dispose();
+    _criminalRecordsController.dispose();
+    _relatedRecordsController.dispose();
+    _summaryController.dispose();
+    _imageUrlController.dispose();
     super.dispose();
   }
 }

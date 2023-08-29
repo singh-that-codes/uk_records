@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myukapp/firestore_database/database_service.dart';
+import 'package:myukapp/screens/update_criminal_details_screen.dart';
+import 'package:myukapp/styles/app_colors.dart'; // Import the update details screen
 
 class UpdateCriminalScreen extends StatefulWidget {
   const UpdateCriminalScreen({Key? key}) : super(key: key);
@@ -19,20 +21,19 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
     _loadCriminals();
   }
 
- void _loadCriminals() {
-  criminalsData = [];
-  filteredCriminals = []; // Initialize with empty list
+  void _loadCriminals() {
+    criminalsData = [];
+    filteredCriminals = []; // Initialize with empty list
 
-  DatabaseService().getCriminals().listen((criminalNames) {
-    setState(() {
-      criminalsData = criminalNames
-          .map((name) => {'fullName': name})
-          .toList();
-      filteredCriminals = criminalsData; // Initialize with all criminals
+    DatabaseService().getCriminals().listen((criminalNames) {
+      setState(() {
+        criminalsData = criminalNames
+            .map((name) => {'fullName': name})
+            .toList();
+        filteredCriminals = criminalsData; // Initialize with all criminals
+      });
     });
-  });
-}
-
+  }
 
   void _filterCriminals(String query) {
     setState(() {
@@ -50,7 +51,7 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UpdateCriminalScreen(),
+        builder: (context) => UpdateCriminalDetailsScreen(criminalName: selectedCriminal, selectedCriminal: '',), // Pass selected criminal name
       ),
     );
   }
@@ -58,7 +59,10 @@ class _UpdateCriminalScreenState extends State<UpdateCriminalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Update Criminal')),
+      backgroundColor: AppColors.bgColor,
+      appBar: AppBar(
+        backgroundColor: AppColors.appBarColor,
+        title: const Text('Update Criminal')),
       body: Column(
         children: [
           Padding(
