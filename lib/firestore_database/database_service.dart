@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _criminalsRef = FirebaseFirestore.instance.collection('criminals');
-
+  
+  
+  
   Future<void> addCriminal({
     required String fullName,
     required String fathersname,
@@ -32,9 +34,33 @@ class DatabaseService {
     });
   }
 
-  Future<void> updateCriminal(String criminalDocId, String newName) async {
-    await _criminalsRef.doc(criminalDocId).update({'fullName': newName});
+  Future<void> updateCriminalDetails(
+    String criminalDocId,
+    String newName,
+    String newFathersName,
+    String newMothersName,
+    String newAge,
+    String newAddress,
+    String newPhone,
+    String newCriminalRecord,
+    String newRelatedRecords,
+    String newSummary,
+    String newImageUrl,
+  ) async {
+    await _criminalsRef.doc(criminalDocId).update({
+      'fullName': newName,
+      'fathersName': newFathersName,
+      'mothersname': newMothersName,
+      'age': newAge,
+      'address': newAddress,
+      'phone': newPhone,
+      'criminalRecord': newCriminalRecord,
+      'relatedRecords': newRelatedRecords,
+      'summary': newSummary,
+      'imageUrl': newImageUrl,
+    });
   }
+
 
   Future<void> deleteCriminal(String criminalDocId) async {
     await _criminalsRef.doc(criminalDocId).delete();
@@ -53,7 +79,6 @@ class DatabaseService {
             criminalNames.add(''); // Return an empty string or a default value
           }
         }
-
         return criminalNames;
       },
     );

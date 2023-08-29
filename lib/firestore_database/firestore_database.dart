@@ -23,7 +23,7 @@ class FirestoreService {
       final querySnapshot = await _firestore.collection('criminals').get();
       return querySnapshot.docs.map((doc) => doc['name'] as String).toList();
     } catch (e) {
-      print('Error getting criminal records: $e');
+      //print('Error getting criminal records: $e');
       return [];
     }
   }
@@ -34,11 +34,11 @@ class FirestoreService {
       final querySnapshot = await _firestore
           .collection('criminals')
           .where('name', isGreaterThanOrEqualTo: query)
-          .where('name', isLessThan: query + 'z')
+          .where('name', isLessThan: '${query}z')
           .get();
       return querySnapshot.docs.map((doc) => doc['name'] as String).toList();
     } catch (e) {
-      print('Error searching criminal records: $e');
+      //print('Error searching criminal records: $e');
       return [];
     }
   }

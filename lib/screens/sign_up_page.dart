@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, use_key_in_widget_constructors
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -19,7 +21,7 @@ class SignUpScreen extends StatelessWidget {
         // Successfully signed in with Google, you can navigate to a new screen or do other actions.
       }
     } catch (error) {
-      print("Google Sign-In Error: $error");
+      //print("Google Sign-In Error: $error");
     }
   }
 
@@ -30,33 +32,29 @@ class SignUpScreen extends StatelessWidget {
         title: Text("Sign Up"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
+  padding: EdgeInsets.all(16),
+  child: Column(
+    children: [
+      GestureDetector(
+        onTap: () {
+          _signInWithGoogle(context);
+        },
+        child: Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                _signInWithGoogle(context);
-              },
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    child: Image.asset('assets/images/google.png'),
-                  ),
-                  SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      "Sign Up with Google",
-                    ),
-                  ),
-                ],
+            Container(
+              width: MediaQuery.of(context).size.width - 10, // Subtract 10 pixels
+              height: 40,
+              child: Image.asset('assets/images/google.png'),
+            ),
+            SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                "Sign Up with Google",
               ),
             ),
-            // Add the "Sign Up with Email" section here
           ],
         ),
       ),
-    );
-  }
-}
+    ],),),
+  );
+}}
